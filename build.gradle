@@ -1,0 +1,82 @@
+import com.android.build.gradle.AppPlugin
+import com.android.build.gradle.LibraryPlugin
+
+buildscript {
+    apply from: "dependencies.gradle"
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:${versions.gradle}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+subprojects {
+    def directories = ["shared", "feature"]
+
+    if (!directories.contains(project.name)) {
+
+        if (project.name == "app") {
+            apply plugin: AppPlugin
+        } else {
+            apply plugin: LibraryPlugin
+        }
+
+        apply plugin: 'kotlin-android'
+        apply plugin: "kotlin-android-extensions"
+
+        sourceSets {
+            main.java.srcDirs += ["src/main/kotlin"]
+            test.java.srcDirs += ["src/test/kotlin"]
+            androidTest.java.srcDirs += ["src/androidTest/kotlin"]
+        }
+
+        android {
+            defaultConfig {
+                compileSdkVersion 30
+                buildToolsVersion "30.0.2"
+                minSdkVersion 21
+                targetSdkVersion 30
+                versionCode 1
+                versionName "1.0"
+
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            }
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+
+            kotlinOptions {
+                jvmTarget = '1.8'
+                useIR = true
+            }
+        }
+
+        dependencies {
+            implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+            implementation "androidx.core:core-ktx:${versions.coreKtx}"
+            implementation "androidx.appcompat:appcompat:${versions.appCompat}"
+            implementation "com.google.android.material:material:${versions.material}"
+            implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
+
+            implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+            implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

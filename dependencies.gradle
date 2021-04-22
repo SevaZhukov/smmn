@@ -1,0 +1,11 @@
+ext {
+    versions = [
+            "kotlin"    : "1.4.21",
+            "gradle"    : '4.1.3',
+            "coreKtx"   : "1.3.2",
+            "appCompat" : "1.2.0",
+            "material"  : "1.2.1",
+            "constraint": "2.0.4",
+            "navigation": "2.3.2",
+    ]
+}

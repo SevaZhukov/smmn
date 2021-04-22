@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(":shared:navigation")
+    implementation project(":feature:profile")
+    implementation project(":feature:settings")
+}
